@@ -2,11 +2,15 @@ import os
 import subprocess
 from tkinter import *
 
+#gather the network info and store it in a list called ipconfig
 ipconfig = os.popen("ipconfig").readlines()   # stores the command output in an array
 ipconfig.pop(0)
 ipconfig.pop(2)
 ipconfig.pop(3)
-wmicPGN = subprocess.check_output(['wmic', 'product', 'get', 'name'])
+
+# gather the isntalled apps and store them in an array turned list called appArray
+with open(os.devnull, 'w') as devnull:
+    wmicPGN = subprocess.run(['wmic', 'product', 'get', 'name'], stdout=subprocess.PIPE, stderr=devnull)
 appArray = str(wmicPGN)
 appArray = appArray.split("\\r\\r\\n")
 appArray = list(filter(None, appArray))
